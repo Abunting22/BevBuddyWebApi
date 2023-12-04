@@ -11,29 +11,35 @@ namespace BevBuddyWebApi.Controllers
     [Authorize]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserServices _userServices;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserServices userServices)
         {
-            _userRepository = userRepository;
+            _userServices = userServices;
         }
 
         [HttpGet("GetAllUsers")]
         public async Task<IEnumerable<User>> GetAll()
         {
-            return await _userRepository.GetAllUsers();
+            return await _userServices.GetAllUsers();
         }
 
-        [HttpPost("GetUserByUsername")]
-        public async Task<IResult> GetUserByUserUsername([FromBody]UserDto request)
+        [HttpGet("GetUserByUsername")]
+        public async Task<IActionResult> GetUserByUserUsername(string username)
         {
-            return await _userRepository.GetUserByUsername(request);
+            return Ok(await _userServices.GetUserInfo(username));
+        }
+
+        [HttpPost("UpdateUserByUsername")]
+        public async Task<ActionResult<User>> UpdateUserByUsername([FromBody] UserDto request)
+        {
+            return await _userServices.UpdateUser(request);
         }
 
         [HttpDelete("DeleteUserByUsername")]
-        public async Task<IResult> DeleteUserByUsername(UserDto request)
+        public async Task<IResult> DeleteUserByUsername([FromBody] UserDto request)
         {
-            return await _userRepository.DeleteUserByUsername(request);
+            return await _userServices.DeleteUser(request);
         }
     }
 }
