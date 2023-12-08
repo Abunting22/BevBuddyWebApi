@@ -7,7 +7,7 @@ namespace BevBuddyWebApi.Interfaces
     {
         public Task<IEnumerable<User>> GetAllUsers();
 
-        public Task<User> GetUserByUsername(string username);
+        public Task<User> GetUserByUserID(int userID);
 
         public Task<ActionResult<User>> UpdateUserByUsername(User user);
 

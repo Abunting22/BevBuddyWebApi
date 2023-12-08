@@ -5,9 +5,11 @@ namespace BevBuddyWebApi.Interfaces
 {
     public interface IBetServices
     {
+        public Task<ActionResult<Bet>> CreateNewBet(BetDto request);
+
         public Task<IEnumerable<Bet>> GetAllBets();
 
-        public Task<Bet> GetBetInfo(int betID);
+        public Task<IEnumerable<Bet>> GetBetInfo(int userID);
 
         public Task<ActionResult<Bet>> UpdateBet(BetDto request);
 

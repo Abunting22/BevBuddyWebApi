@@ -19,16 +19,22 @@ namespace BevBuddyWebApi.Controllers
             _betServices = betServices;
         }
 
+        [HttpPost("CreateNewBet")]
+        public async Task<ActionResult<Bet>> CreateNewBet([FromBody]BetDto request)
+        {
+            return await _betServices.CreateNewBet(request);
+        }
+
         [HttpGet("GetAllBets")]
         public async Task<IEnumerable<Bet>> GetAll()
         {
             return await _betServices.GetAllBets();
         }
 
-        [HttpGet("GetBetByBetID")]
-        public async Task<IActionResult> GetBetByBetID(int betID)
+        [HttpGet("GetBetsByUserID")]
+        public async Task<IEnumerable<Bet>> GetBetsByUserID(int userID)
         {
-            return Ok(await _betServices.GetBetInfo(betID));
+            return await _betServices.GetBetInfo(userID);
         }
 
         [HttpPost("UpdateBetByBetID")]

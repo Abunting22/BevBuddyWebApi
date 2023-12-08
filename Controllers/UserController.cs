@@ -25,9 +25,9 @@ namespace BevBuddyWebApi.Controllers
         }
 
         [HttpGet("GetUserByUsername")]
-        public async Task<IActionResult> GetUserByUserUsername(string username)
+        public async Task<IActionResult> GetUserByUserUserID(int userID)
         {
-            return Ok(await _userServices.GetUserInfo(username));
+            return Ok(await _userServices.GetUserInfo(userID));
         }
 
         [HttpPost("UpdateUserByUsername")]

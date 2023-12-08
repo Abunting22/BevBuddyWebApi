@@ -37,9 +37,9 @@ namespace BevBuddyWebApi.Services
             return await _userRepository.GetAllUsers();
         }
 
-        public async Task<User> GetUserInfo(string username)
+        public async Task<User> GetUserInfo(int userID)
         {
-            var user = await _userRepository.GetUserByUsername(username);
+            var user = await _userRepository.GetUserByUserID(userID);
 
             if (user == null)
                 throw new ArgumentNullException(nameof(user));

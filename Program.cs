@@ -1,5 +1,6 @@
 using BevBuddyWebApi.Interfaces;
 using BevBuddyWebApi.Models;
+using BevBuddyWebApi.Repositories;
 using BevBuddyWebApi.Repository;
 using BevBuddyWebApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -40,11 +41,15 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IBaseRepository, BaseRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IBetRepository, BetRepository>();
 builder.Services.AddScoped<IAuthServices, AuthServices>();
 builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<IBetServices, BetServices>();
 builder.Services.AddScoped<IJwtServices, JwtServices>();
 builder.Services.AddScoped<User>();
 builder.Services.AddScoped<UserDto>();
+builder.Services.AddScoped<Bet>();
+builder.Services.AddScoped<BetDto>();
 
 var app = builder.Build();
 

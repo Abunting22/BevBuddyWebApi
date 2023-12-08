@@ -5,13 +5,25 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BevBuddyWebApi.Repositories
 {
-    public class BetRepository
+    public class BetRepository : IBetRepository
     {
         private readonly IBaseRepository _baseRepository;
 
         public BetRepository(IBaseRepository baseRepository)
         {
             _baseRepository = baseRepository;
+        }
+
+        public async Task<ActionResult<Bet>> CreateNewBet(Bet bet)
+        {
+            const string sql = $"""
+                INSERT INTO Bets (UserID, Bettor, Wager, Description, WagerDate)
+                VALUES (@UserID, @Bettor, @Wager, @Description, @WagerDate)
+                """;
+            using var connection = _baseRepository.Connect();
+            await connection.QueryAsync(sql, bet);
+
+            return bet;
         }
 
         public async Task<IEnumerable<Bet>> GetAllBets()
@@ -24,26 +36,27 @@ namespace BevBuddyWebApi.Repositories
             return bets;
         }
 
-        public async Task<Bet> GetBetByBetID(int betID)
+        public async Task<IEnumerable<Bet>> GetBetsByUserID(int userID)
         {
             const string sql = $"""
-                SELECT BetID, Wager, Bettor, Description, WagerDate
+                SELECT Bets.BetID, Bets.Bettor, Bets.Wager, Bets.Description, Bets.WagerDate
                 FROM Bets
-                WHERE UserID = @UserID
+                RIGHT JOIN Users
+                ON Bets.UserID = Users.UserID
                 """;
 
             using var connection = _baseRepository.Connect();
-            var bet = await connection.QuerySingleOrDefaultAsync<Bet>(sql, new { betID });
+            var bets = await connection.QueryAsync<Bet>(sql, new { userID });
 
-            return bet;
+            return bets;
         }
 
         public async Task<ActionResult<Bet>> UpdateBetByBetID(Bet bet)
         {
             const string sql = $"""
                 UPDATE Bets
-                SET Wager = @WagerID, Bettor = @Bettor, Description = @Description, WagerDate = @WagerDate
-                WHERE BetID = @BetID
+                SET Bettor = @Bettor, Wager = @Wager, Description = @Description, WagerDate = @WagerDate
+                WHERE BetID = @BetID AND UserID = @UserID
                 """;
 
             using var connection = _baseRepository.Connect();

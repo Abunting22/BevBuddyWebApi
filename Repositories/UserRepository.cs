@@ -27,7 +27,7 @@ namespace BevBuddyWebApi.Repository
             return users;
         }
 
-        public async Task<User> GetUserByUsername(string username)
+        public async Task<User> GetUserByUserID(int userID)
         {
             const string sql = $"""
                 SELECT UserID, Username, FirstName, LastName, Email
@@ -36,7 +36,7 @@ namespace BevBuddyWebApi.Repository
                 """;
 
             using var connection = _baseRepository.Connect();
-            var user = await connection.QuerySingleOrDefaultAsync<User>(sql, new { username });
+            var user = await connection.QuerySingleOrDefaultAsync<User>(sql, new { userID });
 
             return user;
         }
